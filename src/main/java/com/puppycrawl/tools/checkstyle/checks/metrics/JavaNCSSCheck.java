@@ -174,9 +174,11 @@ public class JavaNCSSCheck extends Check
             final Counter counter = mCounters.pop();
 
             final int count = counter.getCount();
+            final String methodName =
+                    aAST.findFirstToken(TokenTypes.IDENT).getText();
             if (count > mMethodMax) {
                 log(aAST.getLineNo(), aAST.getColumnNo(), "ncss.method",
-                        count, mMethodMax);
+                        count, mMethodMax, methodName);
             }
         }
         else if (TokenTypes.CLASS_DEF == tokenType) {
