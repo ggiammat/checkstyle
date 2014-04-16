@@ -176,9 +176,14 @@ public class JavaNCSSCheck extends Check
             final int count = counter.getCount();
             final String methodName =
                     aAST.findFirstToken(TokenTypes.IDENT).getText();
+
+            final String className = aAST.getParent().getParent().
+                    findFirstToken(TokenTypes.IDENT).getText();
+
+
             if (count > mMethodMax) {
                 log(aAST.getLineNo(), aAST.getColumnNo(), "ncss.method",
-                        count, mMethodMax, methodName);
+                        count, mMethodMax, className, methodName);
             }
         }
         else if (TokenTypes.CLASS_DEF == tokenType) {
@@ -186,9 +191,13 @@ public class JavaNCSSCheck extends Check
             final Counter counter = mCounters.pop();
 
             final int count = counter.getCount();
+
+            final String className = aAST.getParent().getParent().
+                    findFirstToken(TokenTypes.IDENT).getText();
+
             if (count > mClassMax) {
                 log(aAST.getLineNo(), aAST.getColumnNo(), "ncss.class",
-                        count, mClassMax);
+                        count, mClassMax, className);
             }
         }
     }

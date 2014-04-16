@@ -20,6 +20,7 @@ package com.puppycrawl.tools.checkstyle.checks.coding;
 
 import com.puppycrawl.tools.checkstyle.api.Check;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 /**
  * Abstract class which provides helpers functionality for nestedchecks.
@@ -79,8 +80,16 @@ public abstract class AbstractNestedDepthCheck extends Check
      */
     protected final void nestIn(DetailAST aAST, String aMessageId)
     {
+
+        final String methodName =
+                aAST.findFirstToken(TokenTypes.IDENT).getText();
+
+
+        final String className = aAST.getParent().getParent().findFirstToken(
+                TokenTypes.IDENT).getText();
+
         if (mDepth > mMax) {
-            log(aAST, aMessageId, mDepth, mMax);
+            log(aAST, aMessageId, mDepth, mMax, className, methodName);
         }
         ++mDepth;
     }

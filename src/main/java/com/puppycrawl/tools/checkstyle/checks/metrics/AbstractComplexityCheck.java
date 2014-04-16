@@ -193,10 +193,17 @@ public abstract class AbstractComplexityCheck
     private void leaveMethodDef(DetailAST aAST)
     {
         final BigInteger max = BigInteger.valueOf(mMax);
+
         final String methodName =
                 aAST.findFirstToken(TokenTypes.IDENT).getText();
+
+
+        final String className = aAST.getParent().getParent().findFirstToken(
+                TokenTypes.IDENT).getText();
+
         if (mCurrentValue.compareTo(max) > 0) {
-            log(aAST, getMessageID(), mCurrentValue, max, methodName);
+            log(aAST, getMessageID(), mCurrentValue, max, className,
+                    methodName);
         }
         popValue();
     }
