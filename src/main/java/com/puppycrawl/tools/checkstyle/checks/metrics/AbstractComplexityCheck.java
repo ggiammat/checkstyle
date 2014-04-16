@@ -194,12 +194,22 @@ public abstract class AbstractComplexityCheck
     {
         final BigInteger max = BigInteger.valueOf(mMax);
 
-        final String methodName =
-                aAST.findFirstToken(TokenTypes.IDENT).getText();
-
-
-        final String className = aAST.getParent().getParent().findFirstToken(
+        String methodName = null;
+        String className = null;
+        try {
+            methodName =
+                    aAST.findFirstToken(TokenTypes.IDENT).getText();
+        }
+        catch (Exception e) {
+            System.out.println("Exception got calculating methodName");
+        }
+        try {
+            className = aAST.getParent().getParent().findFirstToken(
                 TokenTypes.IDENT).getText();
+        }
+        catch (Exception e) {
+            System.out.println("Exception got calculating className");
+        }
 
         if (mCurrentValue.compareTo(max) > 0) {
             log(aAST, getMessageID(), mCurrentValue, max, className,

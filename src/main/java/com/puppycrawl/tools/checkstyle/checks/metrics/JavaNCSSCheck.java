@@ -174,11 +174,24 @@ public class JavaNCSSCheck extends Check
             final Counter counter = mCounters.pop();
 
             final int count = counter.getCount();
-            final String methodName =
-                    aAST.findFirstToken(TokenTypes.IDENT).getText();
 
-            final String className = aAST.getParent().getParent().
-                    findFirstToken(TokenTypes.IDENT).getText();
+            String methodName = null;
+            String className = null;
+
+            try {
+                methodName =
+                    aAST.findFirstToken(TokenTypes.IDENT).getText();
+            }
+            catch (Exception e) {
+                System.out.println("Exception got calculating methodName");
+            }
+            try {
+                className = aAST.getParent().getParent().
+                        findFirstToken(TokenTypes.IDENT).getText();
+            }
+            catch (Exception e) {
+                System.out.println("Exception got calculating className");
+            }
 
 
             if (count > mMethodMax) {
