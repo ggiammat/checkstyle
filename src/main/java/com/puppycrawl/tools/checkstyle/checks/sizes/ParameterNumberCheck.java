@@ -97,7 +97,7 @@ public class ParameterNumberCheck
 
         if (count > mMax) {
             final DetailAST name = aAST.findFirstToken(TokenTypes.IDENT);
-            log(name.getLineNo(), name.getColumnNo(), "maxParam", mMax, count,
+            log(name.getLineNo(), name.getColumnNo(), "maxParam", count, mMax,
                     className, methodName);
         }
     }
