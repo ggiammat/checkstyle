@@ -52,6 +52,7 @@ public class CyclomaticComplexityCheck
         return new int[] {
             TokenTypes.CTOR_DEF,
             TokenTypes.METHOD_DEF,
+            TokenTypes.CLASS_DEF,
             TokenTypes.INSTANCE_INIT,
             TokenTypes.STATIC_INIT,
             TokenTypes.LITERAL_WHILE,

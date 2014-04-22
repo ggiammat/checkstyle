@@ -52,6 +52,7 @@ public final class NPathComplexityCheck extends AbstractComplexityCheck
         return new int[] {
             TokenTypes.CTOR_DEF,
             TokenTypes.METHOD_DEF,
+            TokenTypes.CLASS_DEF,
             TokenTypes.STATIC_INIT,
             TokenTypes.INSTANCE_INIT,
             TokenTypes.LITERAL_WHILE,

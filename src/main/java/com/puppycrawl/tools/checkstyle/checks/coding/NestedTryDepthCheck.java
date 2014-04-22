@@ -39,7 +39,11 @@ public final class NestedTryDepthCheck extends AbstractNestedDepthCheck
     @Override
     public int[] getDefaultTokens()
     {
-        return new int[] {TokenTypes.LITERAL_TRY};
+        return new int[] {
+            TokenTypes.LITERAL_TRY,
+            TokenTypes.CLASS_DEF,
+            TokenTypes.METHOD_DEF,
+        };
     }
 
     @Override
@@ -48,6 +52,12 @@ public final class NestedTryDepthCheck extends AbstractNestedDepthCheck
         switch (aAST.getType()) {
         case TokenTypes.LITERAL_TRY:
             visitLiteralTry(aAST);
+            break;
+        case TokenTypes.CLASS_DEF:
+            this.setCurrentClassName2(aAST);
+            break;
+        case TokenTypes.METHOD_DEF:
+            this.setCurrentMethodName2(aAST);
             break;
         default:
             throw new IllegalStateException(aAST.toString());
@@ -60,6 +70,12 @@ public final class NestedTryDepthCheck extends AbstractNestedDepthCheck
         switch (aAST.getType()) {
         case TokenTypes.LITERAL_TRY:
             leaveLiteralTry();
+            break;
+        case TokenTypes.CLASS_DEF:
+            this.setCurrentClassName2(null);
+            break;
+        case TokenTypes.METHOD_DEF:
+            this.setCurrentMethodName2(null);
             break;
         default:
             throw new IllegalStateException(aAST.toString());

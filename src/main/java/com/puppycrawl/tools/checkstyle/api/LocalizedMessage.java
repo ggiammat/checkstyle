@@ -87,6 +87,12 @@ public final class LocalizedMessage
     /** a custom message overriding the default message from the bundle. */
     private final String mCustomMessage;
 
+    /** the class name where the event occurred. */
+    private final String mClassName;
+
+    /** the method name where the event occurred. */
+    private final String mMethodName;
+
     @Override
     public boolean equals(Object aObject)
     {
@@ -139,6 +145,46 @@ public final class LocalizedMessage
      * @param aColNo column number associated with the message
      * @param aBundle resource bundle name
      * @param aKey the key to locate the translation
+     * @param aClassName the class name
+     * @param aMethodName the method name
+     * @param aArgs arguments for the translation
+     * @param aSeverityLevel severity level for the message
+     * @param aModuleId the id of the module the message is associated with
+     * @param aSourceClass the Class that is the source of the message
+     * @param aCustomMessage optional custom message overriding the default
+     */
+    public LocalizedMessage(int aLineNo,
+                            int aColNo,
+                            String aBundle,
+                            String aKey,
+                            String aClassName,
+                            String aMethodName,
+                            Object[] aArgs,
+                            SeverityLevel aSeverityLevel,
+                            String aModuleId,
+                            Class<?> aSourceClass,
+                            String aCustomMessage)
+    {
+        mLineNo = aLineNo;
+        mColNo = aColNo;
+        mKey = aKey;
+        mClassName = aClassName;
+        mMethodName = aMethodName;
+        mArgs = (null == aArgs) ? null : aArgs.clone();
+        mBundle = aBundle;
+        mSeverityLevel = aSeverityLevel;
+        mModuleId = aModuleId;
+        mSourceClass = aSourceClass;
+        mCustomMessage = aCustomMessage;
+    }
+
+    /**
+     * Creates a new <code>LocalizedMessage</code> instance.
+     *
+     * @param aLineNo line number associated with the message
+     * @param aColNo column number associated with the message
+     * @param aBundle resource bundle name
+     * @param aKey the key to locate the translation
      * @param aArgs arguments for the translation
      * @param aSeverityLevel severity level for the message
      * @param aModuleId the id of the module the message is associated with
@@ -155,15 +201,17 @@ public final class LocalizedMessage
                             Class<?> aSourceClass,
                             String aCustomMessage)
     {
-        mLineNo = aLineNo;
-        mColNo = aColNo;
-        mKey = aKey;
-        mArgs = (null == aArgs) ? null : aArgs.clone();
-        mBundle = aBundle;
-        mSeverityLevel = aSeverityLevel;
-        mModuleId = aModuleId;
-        mSourceClass = aSourceClass;
-        mCustomMessage = aCustomMessage;
+        this(aLineNo,
+                aColNo,
+                aBundle,
+                aKey,
+                null,
+                null,
+                aArgs,
+                aSeverityLevel,
+                aModuleId,
+                aSourceClass,
+                aCustomMessage);
     }
 
     /**
@@ -320,6 +368,18 @@ public final class LocalizedMessage
     public int getColumnNo()
     {
         return mColNo;
+    }
+
+    /** @return the class name */
+    public String getClassName()
+    {
+        return mClassName;
+    }
+
+    /** @return the method name */
+    public String getMethodName()
+    {
+        return mMethodName;
     }
 
     /** @return the severity level **/

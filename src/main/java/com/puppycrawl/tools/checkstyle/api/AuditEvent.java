@@ -37,7 +37,7 @@ import java.util.EventObject;
  * @see AuditListener
  */
 public final class AuditEvent
-    extends EventObject
+        extends EventObject
 {
     /** Record a version. */
     private static final long serialVersionUID = -3774725606973812736L;
@@ -98,6 +98,25 @@ public final class AuditEvent
         return mMessage.getLineNo();
     }
 
+
+    /**
+     * return the class name where the event occurred.
+     * @return a string representing the class name
+     */
+    public String getClassName()
+    {
+        return mMessage.getClassName();
+    }
+
+    /**
+     * return the method name where the event occurred.
+     * @return a string representing the method name
+     */
+    public String getMethodName()
+    {
+        return mMessage.getMethodName();
+    }
+
     /**
      * return the message associated to the event.
      * @return the event message
@@ -117,8 +136,8 @@ public final class AuditEvent
     public SeverityLevel getSeverityLevel()
     {
         return (mMessage == null)
-            ? SeverityLevel.INFO
-            : mMessage.getSeverityLevel();
+                ? SeverityLevel.INFO
+                : mMessage.getSeverityLevel();
     }
 
     /**

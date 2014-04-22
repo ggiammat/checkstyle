@@ -137,6 +137,19 @@ public class XMLLogger
             mWriter.print(" message=\""
                 + encode(aEvt.getMessage())
                 + "\"");
+
+            if (aEvt.getClassName() != null) {
+                mWriter.print(" class=\""
+                        + encode(aEvt.getClassName())
+                        + "\"");
+            }
+
+            if (aEvt.getMethodName() != null) {
+                mWriter.print(" method=\""
+                        + encode(aEvt.getMethodName())
+                        + "\"");
+            }
+
             mWriter.println(" source=\""
                 + encode(aEvt.getSourceName())
                 + "\"/>");

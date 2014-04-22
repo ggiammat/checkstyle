@@ -41,7 +41,11 @@ public final class NestedIfDepthCheck extends AbstractNestedDepthCheck
     @Override
     public int[] getDefaultTokens()
     {
-        return new int[] {TokenTypes.LITERAL_IF};
+        return new int[] {
+            TokenTypes.LITERAL_IF,
+            TokenTypes.CLASS_DEF,
+            TokenTypes.METHOD_DEF,
+        };
     }
 
     @Override
@@ -50,6 +54,12 @@ public final class NestedIfDepthCheck extends AbstractNestedDepthCheck
         switch (aAST.getType()) {
         case TokenTypes.LITERAL_IF:
             visitLiteralIf(aAST);
+            break;
+        case TokenTypes.CLASS_DEF:
+            this.setCurrentClassName2(aAST);
+            break;
+        case TokenTypes.METHOD_DEF:
+            this.setCurrentMethodName2(aAST);
             break;
         default:
             throw new IllegalStateException(aAST.toString());
@@ -62,6 +72,12 @@ public final class NestedIfDepthCheck extends AbstractNestedDepthCheck
         switch (aAST.getType()) {
         case TokenTypes.LITERAL_IF:
             leaveLiteralIf(aAST);
+            break;
+        case TokenTypes.CLASS_DEF:
+            this.setCurrentClassName2(null);
+            break;
+        case TokenTypes.METHOD_DEF:
+            this.setCurrentMethodName2(null);
             break;
         default:
             throw new IllegalStateException(aAST.toString());

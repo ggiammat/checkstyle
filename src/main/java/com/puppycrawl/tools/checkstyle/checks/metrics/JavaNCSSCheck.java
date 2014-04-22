@@ -142,6 +142,14 @@ public class JavaNCSSCheck extends Check
     {
         final int tokenType = aAST.getType();
 
+        if (TokenTypes.CLASS_DEF == tokenType) {
+            this.setCurrentClassName2(aAST);
+        }
+
+        if (TokenTypes.METHOD_DEF == tokenType) {
+            this.setCurrentMethodName2(aAST);
+        }
+
         if ((TokenTypes.CLASS_DEF == tokenType)
             || (TokenTypes.METHOD_DEF == tokenType)
             || (TokenTypes.CTOR_DEF == tokenType)
@@ -175,28 +183,10 @@ public class JavaNCSSCheck extends Check
 
             final int count = counter.getCount();
 
-            String methodName = null;
-            String className = null;
-
-            try {
-                methodName =
-                    aAST.findFirstToken(TokenTypes.IDENT).getText();
-            }
-            catch (Exception e) {
-                System.out.println("Exception got calculating methodName");
-            }
-            try {
-                className = aAST.getParent().getParent().
-                        findFirstToken(TokenTypes.IDENT).getText();
-            }
-            catch (Exception e) {
-                System.out.println("Exception got calculating className");
-            }
-
-
             if (count > mMethodMax) {
-                log(aAST.getLineNo(), aAST.getColumnNo(), "ncss.method",
-                        count, mMethodMax, className, methodName);
+                log2(aAST, "ncss.method",
+                        this.getCurrentClassName2(),
+                        this.getCurrentMethodName2(), count, mMethodMax);
             }
         }
         else if (TokenTypes.CLASS_DEF == tokenType) {
@@ -205,13 +195,20 @@ public class JavaNCSSCheck extends Check
 
             final int count = counter.getCount();
 
-            final String className = aAST.getParent().getParent().
-                    findFirstToken(TokenTypes.IDENT).getText();
-
             if (count > mClassMax) {
-                log(aAST.getLineNo(), aAST.getColumnNo(), "ncss.class",
-                        count, mClassMax, className);
+                log2(aAST, "ncss.class",
+                        this.getCurrentClassName2(),
+                        this.getCurrentMethodName2(),
+                        count, mClassMax);
             }
+        }
+
+        if (TokenTypes.CLASS_DEF == tokenType) {
+            this.setCurrentClassName2(null);
+        }
+
+        if (TokenTypes.METHOD_DEF == tokenType) {
+            this.setCurrentMethodName2(null);
         }
     }
 
