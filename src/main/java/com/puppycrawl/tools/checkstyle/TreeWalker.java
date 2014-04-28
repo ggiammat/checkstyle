@@ -395,6 +395,30 @@ public final class TreeWalker
      */
     private void notifyVisit(DetailAST aAST)
     {
+
+        switch (aAST.getType()) {
+        case TokenTypes.PACKAGE_DEF:
+            for (Check c : mAllChecks) {
+                c.setCurrentPackageName2(aAST);
+            }
+            break;
+        case TokenTypes.CTOR_DEF:
+        case TokenTypes.INSTANCE_INIT:
+        case TokenTypes.STATIC_INIT:
+        case TokenTypes.METHOD_DEF:
+            for (Check c : mAllChecks) {
+                c.setCurrentMethodName2(aAST);
+            }
+            break;
+        case TokenTypes.CLASS_DEF:
+            for (Check c : mAllChecks) {
+                c.setCurrentClassName2(aAST);
+            }
+            break;
+        default:
+            break;
+        }
+
         final Collection<Check> visitors =
             mTokenToChecks.get(TokenTypes.getTokenName(aAST.getType()));
         for (Check c : visitors) {
@@ -414,6 +438,29 @@ public final class TreeWalker
             mTokenToChecks.get(TokenTypes.getTokenName(aAST.getType()));
         for (Check ch : visitors) {
             ch.leaveToken(aAST);
+        }
+
+        switch (aAST.getType()) {
+        case TokenTypes.EOF:
+            for (Check c : mAllChecks) {
+                c.setCurrentPackageName2(null);
+            }
+            break;
+        case TokenTypes.CTOR_DEF:
+        case TokenTypes.INSTANCE_INIT:
+        case TokenTypes.STATIC_INIT:
+        case TokenTypes.METHOD_DEF:
+            for (Check c : mAllChecks) {
+                c.setCurrentMethodName2(null);
+            }
+            break;
+        case TokenTypes.CLASS_DEF:
+            for (Check c : mAllChecks) {
+                c.setCurrentClassName2(null);
+            }
+            break;
+        default:
+            break;
         }
     }
 

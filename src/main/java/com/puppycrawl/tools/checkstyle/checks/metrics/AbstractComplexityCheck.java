@@ -87,7 +87,6 @@ public abstract class AbstractComplexityCheck
             TokenTypes.METHOD_DEF,
             TokenTypes.INSTANCE_INIT,
             TokenTypes.STATIC_INIT,
-            TokenTypes.CLASS_DEF,
         };
     }
 
@@ -112,16 +111,10 @@ public abstract class AbstractComplexityCheck
     {
         switch (aAST.getType()) {
         case TokenTypes.CTOR_DEF:
+        case TokenTypes.METHOD_DEF:
         case TokenTypes.INSTANCE_INIT:
         case TokenTypes.STATIC_INIT:
             visitMethodDef();
-            break;
-        case TokenTypes.METHOD_DEF:
-            this.setCurrentMethodName2(aAST);
-            visitMethodDef();
-            break;
-        case TokenTypes.CLASS_DEF:
-            this.setCurrentClassName2(aAST);
             break;
         default:
             visitTokenHook(aAST);
@@ -133,6 +126,7 @@ public abstract class AbstractComplexityCheck
     {
         switch (aAST.getType()) {
         case TokenTypes.CTOR_DEF:
+        case TokenTypes.METHOD_DEF:
         case TokenTypes.INSTANCE_INIT:
         case TokenTypes.STATIC_INIT:
             leaveMethodDef(aAST);
@@ -199,10 +193,8 @@ public abstract class AbstractComplexityCheck
     private void leaveMethodDef(DetailAST aAST)
     {
         final BigInteger max = BigInteger.valueOf(mMax);
-
         if (mCurrentValue.compareTo(max) > 0) {
-            log2(aAST, getMessageID(), this.getCurrentClassName2(),
-                    this.getCurrentMethodName2(), mCurrentValue, max);
+            log(aAST, getMessageID(), mCurrentValue, max);
         }
         popValue();
     }

@@ -54,46 +54,22 @@ public final class NestedForDepthCheck extends AbstractNestedDepthCheck
     @Override
     public int[] getDefaultTokens()
     {
-        return new int[] {
-            TokenTypes.LITERAL_FOR,
-            TokenTypes.CLASS_DEF,
-            TokenTypes.METHOD_DEF,
-        };
+        return new int[] {TokenTypes.LITERAL_FOR};
     }
 
     @Override
     public void visitToken(DetailAST aAST)
     {
-        switch (aAST.getType()) {
-        case TokenTypes.LITERAL_FOR:
+        if (TokenTypes.LITERAL_FOR == aAST.getType()) {
             nestIn(aAST, "nested.for.depth");
-            break;
-        case TokenTypes.CLASS_DEF:
-            this.setCurrentClassName2(aAST);
-            break;
-        case TokenTypes.METHOD_DEF:
-            this.setCurrentMethodName2(aAST);
-            break;
-        default:
-            throw new IllegalStateException(aAST.toString());
         }
     }
 
     @Override
     public void leaveToken(DetailAST aAST)
     {
-        switch (aAST.getType()) {
-        case TokenTypes.LITERAL_FOR:
+        if (TokenTypes.LITERAL_FOR == aAST.getType()) {
             nestOut();
-            break;
-        case TokenTypes.CLASS_DEF:
-            this.setCurrentClassName2(null);
-            break;
-        case TokenTypes.METHOD_DEF:
-            this.setCurrentMethodName2(null);
-            break;
-        default:
-            throw new IllegalStateException(aAST.toString());
         }
     }
 }

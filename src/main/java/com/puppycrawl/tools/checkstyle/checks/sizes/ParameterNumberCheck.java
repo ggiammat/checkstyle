@@ -76,28 +76,9 @@ public class ParameterNumberCheck
     {
         final DetailAST params = aAST.findFirstToken(TokenTypes.PARAMETERS);
         final int count = params.getChildCount(TokenTypes.PARAMETER_DEF);
-
-        String methodName = null;
-        String className = null;
-
-        try {
-            methodName =
-                    aAST.findFirstToken(TokenTypes.IDENT).getText();
-        }
-        catch (Exception e) {
-            System.out.println("Exception got calculating methodName");
-        }
-        try {
-            className = aAST.getParent().getParent().findFirstToken(
-                    TokenTypes.IDENT).getText();
-        }
-        catch (Exception e) {
-            System.out.println("Exception got calculating className");
-        }
-
         if (count > mMax) {
             final DetailAST name = aAST.findFirstToken(TokenTypes.IDENT);
-            log2(name, "maxParam", className, methodName, count, mMax);
+            log(name.getLineNo(), name.getColumnNo(), "maxParam", mMax, count);
         }
     }
 }

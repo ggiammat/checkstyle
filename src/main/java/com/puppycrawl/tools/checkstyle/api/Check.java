@@ -52,6 +52,9 @@ public abstract class Check extends AbstractViolationReporter
     /** the current methdo name */
     private String mCurrentMethodName;
 
+    /** the current package name */
+    private String mCurrentPackageName;
+
     /**
      * The class loader to load external classes. Not initialised as this must
      * be set by my creator.
@@ -221,20 +224,6 @@ public abstract class Check extends AbstractViolationReporter
         return mTabWidth;
     }
 
-
-    /** @return the current class name */
-    public String getCurrentClassName2()
-    {
-        return this.mCurrentClassName;
-    }
-
-
-    /** @return the current method name */
-    public String getCurrentMethodName2()
-    {
-        return this.mCurrentMethodName;
-    }
-
     /**
      * set the current class name.
      * @param aAST the current class def token
@@ -259,8 +248,28 @@ public abstract class Check extends AbstractViolationReporter
             this.mCurrentMethodName = null;
             return;
         }
-        this.mCurrentMethodName = aAST.findFirstToken(
-                TokenTypes.IDENT).getText();
+
+        try {
+            this.mCurrentMethodName = aAST.findFirstToken(
+                    TokenTypes.IDENT).getText();
+        }
+        catch (NullPointerException ex) {
+            this.mCurrentMethodName = "Anonymous";
+        }
+    }
+
+    /**
+     * set the current package def token.
+     * @param aAST the current class name
+     */
+    public void setCurrentPackageName2(DetailAST aAST)
+    {
+        if (aAST == null) {
+            this.mCurrentPackageName = null;
+            return;
+        }
+        final DetailAST nameAST = aAST.getLastChild().getPreviousSibling();
+        this.mCurrentPackageName = FullIdent.createFullIdent(nameAST).getText();
     }
 
     /**
@@ -278,8 +287,12 @@ public abstract class Check extends AbstractViolationReporter
         mMessages.add(
             new LocalizedMessage(
                 aLine,
+                0,
                 getMessageBundle(),
                 aKey,
+                mCurrentPackageName,
+                mCurrentClassName,
+                mCurrentMethodName,
                 aArgs,
                 getSeverityLevel(),
                 getId(),
@@ -300,41 +313,13 @@ public abstract class Check extends AbstractViolationReporter
                 col,
                 getMessageBundle(),
                 aKey,
+                mCurrentPackageName,
+                mCurrentClassName,
+                mCurrentMethodName,
                 aArgs,
                 getSeverityLevel(),
                 getId(),
                 this.getClass(),
                 this.getCustomMessages().get(aKey)));
-    }
-
-    /**
-     * Log a message that has column information.
-     *
-     * @param aAST the token
-     * @param aKey the message that describes the error
-     * @param aClassName the class name
-     * @param aMethodName the method name
-     * @param aArgs the details of the message
-     */
-    public final void log2(DetailAST aAST, String aKey,
-                          String aClassName, String aMethodName,
-                          Object... aArgs)
-    {
-        final int col = 1 + Utils.lengthExpandedTabs(
-                getLines()[aAST.getLineNo() - 1], aAST.getColumnNo(),
-                getTabWidth());
-        mMessages.add(
-                new LocalizedMessage(
-                        aAST.getLineNo(),
-                        col,
-                        getMessageBundle(),
-                        aKey,
-                        aClassName,
-                        aMethodName,
-                        aArgs,
-                        getSeverityLevel(),
-                        getId(),
-                        this.getClass(),
-                        this.getCustomMessages().get(aKey)));
     }
 }

@@ -138,6 +138,11 @@ public class XMLLogger
                 + encode(aEvt.getMessage())
                 + "\"");
 
+            if (aEvt.getPackageName() != null) {
+                mWriter.print(" package=\""
+                        + encode(aEvt.getPackageName())
+                        + "\"");
+            }
             if (aEvt.getClassName() != null) {
                 mWriter.print(" class=\""
                         + encode(aEvt.getClassName())

@@ -93,6 +93,9 @@ public final class LocalizedMessage
     /** the method name where the event occurred. */
     private final String mMethodName;
 
+    /** the package name where the event occurred. */
+    private final String mPackageName;
+
     @Override
     public boolean equals(Object aObject)
     {
@@ -145,6 +148,7 @@ public final class LocalizedMessage
      * @param aColNo column number associated with the message
      * @param aBundle resource bundle name
      * @param aKey the key to locate the translation
+     * @param aPackageName the package name
      * @param aClassName the class name
      * @param aMethodName the method name
      * @param aArgs arguments for the translation
@@ -157,6 +161,7 @@ public final class LocalizedMessage
                             int aColNo,
                             String aBundle,
                             String aKey,
+                            String aPackageName,
                             String aClassName,
                             String aMethodName,
                             Object[] aArgs,
@@ -168,6 +173,7 @@ public final class LocalizedMessage
         mLineNo = aLineNo;
         mColNo = aColNo;
         mKey = aKey;
+        mPackageName = aPackageName;
         mClassName = aClassName;
         mMethodName = aMethodName;
         mArgs = (null == aArgs) ? null : aArgs.clone();
@@ -205,6 +211,7 @@ public final class LocalizedMessage
                 aColNo,
                 aBundle,
                 aKey,
+                null,
                 null,
                 null,
                 aArgs,
@@ -380,6 +387,12 @@ public final class LocalizedMessage
     public String getMethodName()
     {
         return mMethodName;
+    }
+
+    /** @return the package name */
+    public String getPackageName()
+    {
+        return mPackageName;
     }
 
     /** @return the severity level **/

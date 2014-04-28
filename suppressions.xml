@@ -28,7 +28,7 @@
               lines="28"/>
     <suppress id="paramNum"
               files="LocalizedMessage.java"
-              lines="156,194,229,261"/>
+              lines="160,200,236,268"/>
 
     <!-- Tone down the checking for test code -->
     <suppress checks="EmptyBlock" files=".*[\\/]src[\\/]test[\\/]"/>

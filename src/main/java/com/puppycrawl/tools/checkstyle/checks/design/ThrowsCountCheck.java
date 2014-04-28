@@ -59,8 +59,6 @@ public final class ThrowsCountCheck extends Check
     {
         return new int[] {
             TokenTypes.LITERAL_THROWS,
-            TokenTypes.CLASS_DEF,
-            TokenTypes.METHOD_DEF,
         };
     }
 
@@ -95,12 +93,6 @@ public final class ThrowsCountCheck extends Check
         case TokenTypes.LITERAL_THROWS:
             visitLiteralThrows(aAST);
             break;
-        case TokenTypes.CLASS_DEF:
-            this.setCurrentClassName2(aAST);
-            break;
-        case TokenTypes.METHOD_DEF:
-            this.setCurrentMethodName2(aAST);
-            break;
         default:
             throw new IllegalStateException(aAST.toString());
         }
@@ -115,8 +107,8 @@ public final class ThrowsCountCheck extends Check
         // Account for all the commas!
         final int count = (aAST.getChildCount() + 1) / 2;
         if (count > getMax()) {
-            log2(aAST, "throws.count", this.getCurrentClassName2(),
-                    this.getCurrentMethodName2(), count, getMax());
+            log(aAST.getLineNo(),  aAST.getColumnNo(), "throws.count",
+                count, getMax());
         }
     }
 }

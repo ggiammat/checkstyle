@@ -109,6 +109,15 @@ public final class AuditEvent
     }
 
     /**
+     * return the package name where the event occurred.
+     * @return a string representing the class name
+     */
+    public String getPackageName()
+    {
+        return mMessage.getPackageName();
+    }
+
+    /**
      * return the method name where the event occurred.
      * @return a string representing the method name
      */
